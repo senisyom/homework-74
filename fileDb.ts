@@ -8,12 +8,10 @@ const fileDb = {
   async init() {
     try {
       const files = await fs.readdir(path);
-      files.forEach((file) => {
-        const fileRead = async () => {
-          const message = await fs.readFile(path + "/" + file);
-          const response: Message = JSON.parse(message.toString());
-          data.push(response);
-        };
+      files.forEach(async (file) => {
+        const message = await fs.readFile(path + '/' + file);
+        const response: Message = JSON.parse(message.toString());
+        data.push(response);
       });
     } catch (e) {
       console.error(e);
@@ -21,14 +19,16 @@ const fileDb = {
   },
 
   async getItems() {
-    return data;
+    return data.slice(-5);
   },
 
   async addItem(item: Message) {
     const dateTime = new Date().toISOString();
-
-    await fs.writeFile(fileName, JSON.stringify(data));
-    data.push(item);
+    const message = { ...item, dateTime };
+    data.push(message);
+    const fileName = `${path}/${dateTime}.txt`;
+    await fs.writeFile(fileName, JSON.stringify(message));
+    return message;
   },
 };
 
