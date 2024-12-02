@@ -10,16 +10,13 @@ app.use(express.json());
 
 app.use("/message", messageRouter);
 
-const run = async () => {
-  if (fs.existsSync("./messages")) {
-    await fileName.init();
-  } else {
-    fs.writeFileSync("./messages", JSON.stringify('./:messages'));
-  }
-};
+const path = "./messages";
 
-app.listen(port, () => {
-  console.log(`Server started on port http://localhost:${port}`);
-});
+const run = async () => {
+  await fileName.init();
+  app.listen(port, () => {
+    console.log(`Server started on port http://localhost:${port}`);
+  });
+};
 
 run().catch((err) => console.log(err));

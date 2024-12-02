@@ -13,6 +13,7 @@ messageRouter.get("/messages", async (req, res) => {
 messageRouter.post("/", async (req, res) => {
   const message: Message = {
     message: req.body.message,
+    dateTime: req.body.dateTime,
   };
 
   const savedMessage = await fileDb.addItem(message);
