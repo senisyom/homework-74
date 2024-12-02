@@ -2,7 +2,8 @@ import { promises as fs } from "fs";
 import { Message } from "./types";
 import crypto from "crypto";
 
-const fileName = "./db.json";
+const dateTime = new Date().toISOString();
+const fileName = `./${dateTime}.txt`;
 let data: Message[] = [];
 
 const fileDb = {
@@ -20,16 +21,9 @@ const fileDb = {
   },
 
   async addItem(item: Message) {
-    const dateTime = new Date().toISOString();
-    const message = { dateTime, ...item };
-    data.push(message);
-    await this.save();
-    return message;
-  },
-
-  async save() {
     return fs.writeFile(fileName, JSON.stringify(data));
   },
 };
 
 export default fileDb;
+
